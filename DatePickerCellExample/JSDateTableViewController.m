@@ -8,32 +8,24 @@
 
 #import "JSDateTableViewController.h"
 
-//#pragma mark - 
-//#pragma mark Custom TableView Cell
 //
-//@interface UITextFieldCell : UITableViewCell
+//TODO: Implement other solutions to use a UIDatePicker or custom view with a UITableViewCell
 //
-//@property (nonatomic, strong) UITextField *textField;
-//
-//@end
-
 
 #pragma mark - Table Section Enum
 typedef enum {
-    JSDateTableSectionTextField,
     JSDateTableSectionLabel,
     numberOfTableSections
 } JSDateTableSections;
 
-#pragma mark - Class Extensions
-@interface JSDateTableViewController ()
 
+#pragma mark - JSDateTableViewController Class Extension
+@interface JSDateTableViewController ()
 
 @property (nonatomic, strong) NSDate *currentlySelectedDate;
 
 @end
 
-#pragma mark - Global Static Variables
 
 #pragma mark - JSDateTableViewController Implementation
 @implementation JSDateTableViewController
@@ -54,7 +46,6 @@ typedef enum {
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
@@ -68,26 +59,16 @@ typedef enum {
 
 - (UITableViewCell *)tableView:(UITableView *)iTableView cellForRowAtIndexPath:(NSIndexPath *)iIndexPath {
     static NSString *LabelIdentifier = @"LabelCell";
-    static NSString *TextFieldIdentifier = @"TextFieldCell";
     
     UITableViewCell *cell = nil;
     
-    if(iIndexPath.section == JSDateTableSectionTextField) {
-        cell = [iTableView dequeueReusableCellWithIdentifier:TextFieldIdentifier];
-        
-        if(cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextFieldIdentifier];
-        }
-        
-        
-    } else
     if(iIndexPath.section == JSDateTableSectionLabel) {
         cell = (JSDatePickerCell *)[iTableView dequeueReusableCellWithIdentifier:LabelIdentifier];
         
         if(cell == nil) {
             cell = [[JSDatePickerCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:LabelIdentifier];
-            cell.textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20.0];
-            cell.detailTextLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:20.0];
+            cell.textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18.0];
+            cell.detailTextLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:17.0];
         }
 
         cell.textLabel.text = @"Birthday";
@@ -95,8 +76,16 @@ typedef enum {
     
     return cell;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 66.0f;
+    return 55.0f;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section == JSDateTableSectionLabel) {
+        return @"TableViewCell Subclass Solution";
+    }
+    return nil;
 }
 
 #pragma mark - Table view delegate
@@ -113,15 +102,6 @@ typedef enum {
     }
     return _currentlySelectedDate;
 }
-
-#pragma mark - UIDatePicker Methods & Selectors
-
-//- (void)dateDidChange:(UIDatePicker *)iDatePicker{
-//    self.currentlySelectedDate = iDatePicker.date;
-//    
-//    // Note: If this was in a bigger table it would probably be smarter to ONLY reload the specific row or section
-//    [self.tableView reloadData];
-//}
 
 #pragma mark - JSDatePickerCellDelegate
 - (void)datePickerCell:(JSDatePickerCell *)iCell didEndEditingWithDate:(NSDate *)iDate {

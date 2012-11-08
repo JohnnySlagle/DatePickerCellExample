@@ -9,7 +9,6 @@
 #import "JSDatePickerCell.h"
 
 #pragma mark - Defines
-#define USE_TAP_GESTURE_DISMISS 0
 
 #pragma mark - Class Extension
 @interface JSDatePickerCell ()
@@ -20,19 +19,17 @@
 
 @property (nonatomic, strong) UIToolbar *inputAccessoryToolbar;
 
-#if USE_TAP_GESTURE_DISMISS
-@property (nonatomic, strong) UITapGestureRecognizer *tapDismissGesture;
-#endif
+@property (nonatomic, strong) UITapGestureRecognizer *tapGestureDismiss;
 
 @end
 
 #pragma mark - Global Static Variables
-//static CGFloat kDefaultDatePickerHeight = 300.0f;
 static NSString *kDatePickerFormat = @"MMMM dd, yyyy";
 
+#pragma mark - JSDatePickerCell Implementation
 @implementation JSDatePickerCell
 
-// Note: For some reason all other properties were getting their automatic ivar except this one.
+//FIXME: For some reason all other properties were getting their automatic ivar except this one.
 @synthesize dateValue = _dateValue;
 
 #pragma mark - Init Methods
@@ -40,17 +37,13 @@ static NSString *kDatePickerFormat = @"MMMM dd, yyyy";
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        // Setup this cell's "inputView"
-        [self setupInputView];
+        // Setup Defaults
+        self.detailTextLabel.text = [self formattedDate];
+        self.tapGestureDismissEnabled = NO;
     }
     return self;
 }
 
-#pragma mark - Setup methods
-- (void)setupInputView {
-    // Setup with default date
-    self.detailTextLabel.text = [self formattedDate];
-}
 
 #pragma mark - UIDatePicker Methods & Selectors
 - (void)dateDidChange:(UIDatePicker *)iDatePicker {
@@ -63,6 +56,10 @@ static NSString *kDatePickerFormat = @"MMMM dd, yyyy";
             [self.delegate datePickerCell:self didEndEditingWithDate:self.dateValue];
         }
 	}
+    
+    // Post the notification
+    [[NSNotificationCenter defaultCenter] postNotificationName:JSDATEPICKERCELL_DID_END_EDITING_NOTIFICATION
+                                                        object:self];
 }
 
 #pragma mark - UITableViewCell Overrides
@@ -81,15 +78,15 @@ static NSString *kDatePickerFormat = @"MMMM dd, yyyy";
 	if (selected) {
 		[self becomeFirstResponder];
 
-#if USE_TAP_GESTURE_DISMISS
-        // Setup Tap Gesture
-        UITableView *tableView = (UITableView *)self.superview;
-        self.tapDismissGesture = [[UITapGestureRecognizer alloc]
-                             initWithTarget:self
-                             action:@selector(dismissInputView)];
-        
-        [tableView addGestureRecognizer:self.tapDismissGesture];
-#endif
+        if(self.tapGestureDismissEnabled) {
+            // Setup Tap Gesture
+            UITableView *tableView = (UITableView *)self.superview;
+            self.tapGestureDismiss = [[UITapGestureRecognizer alloc]
+                                 initWithTarget:self
+                                 action:@selector(dismissInputView)];
+            
+            [tableView addGestureRecognizer:self.tapGestureDismiss];
+        }
 	}
 }
 
@@ -127,14 +124,14 @@ static NSString *kDatePickerFormat = @"MMMM dd, yyyy";
     if(_inputAccessoryToolbar == nil) {
         _inputAccessoryToolbar = [[UIToolbar alloc] init];
         _inputAccessoryToolbar.barStyle = UIBarStyleBlackTranslucent;
-        _inputAccessoryToolbar.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-        [_inputAccessoryToolbar sizeToFit];
-        
-        //FIXME: I think I can change this..sort of wacky
+
+        // Set Height
         CGRect frame = _inputAccessoryToolbar.frame;
         frame.size.height = 44.0f;
         _inputAccessoryToolbar.frame = frame;
         
+        // Setup Buttons
+        //TODO: Allow somebody else to set this
         UIBarButtonItem *doneBarButton =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneTapped)];
         UIBarButtonItem *flexibleSpaceLeft = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         
@@ -160,14 +157,13 @@ static NSString *kDatePickerFormat = @"MMMM dd, yyyy";
 	[self resignFirstResponder];
 }
 
-#if USE_TAP_GESTURE_DISMISS
+
 - (void) dismissInputView {
     [self resignFirstResponder];
     
     UITableView *tableView = (UITableView *)self.superview;
-    [tableView removeGestureRecognizer:self.tapDismissGesture];
+    [tableView removeGestureRecognizer:self.tapGestureDismiss];
 }
-#endif
 
 
 #pragma mark - Overriding Responder Methods
