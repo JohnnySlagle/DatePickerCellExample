@@ -8,7 +8,8 @@
 
 #import "JSDateTableViewController.h"
 
-//
+
+
 //TODO: Implement other solutions to use a UIDatePicker or custom view with a UITableViewCell
 //
 
@@ -39,23 +40,28 @@ typedef enum {
     return self;
 }
 
+
 #pragma mark - View lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
 }
 
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
+
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)iTableView {
     return numberOfTableSections;
 }
 
+
 - (NSInteger)tableView:(UITableView *)iTableView numberOfRowsInSection:(NSInteger)iSection {
     return 1;
 }
+
 
 - (UITableViewCell *)tableView:(UITableView *)iTableView cellForRowAtIndexPath:(NSIndexPath *)iIndexPath {
     static NSString *LabelIdentifier = @"LabelCell";
@@ -77,16 +83,19 @@ typedef enum {
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+- (CGFloat)tableView:(UITableView *)iTableView heightForRowAtIndexPath:(NSIndexPath *)iIndexPath {
     return 55.0f;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (section == JSDateTableSectionLabel) {
+
+- (NSString *)tableView:(UITableView *)iTableView titleForHeaderInSection:(NSInteger)iSection {
+    if (iSection == JSDateTableSectionLabel) {
         return @"TableViewCell Subclass Solution";
     }
     return nil;
 }
+
 
 #pragma mark - Table view delegate
 
@@ -103,9 +112,11 @@ typedef enum {
     return _currentlySelectedDate;
 }
 
+
 #pragma mark - JSDatePickerCellDelegate
 - (void)datePickerCell:(JSDatePickerCell *)iCell didEndEditingWithDate:(NSDate *)iDate {
     	NSLog(@"%@ date changed to: %@", iCell.detailTextLabel.text, iDate);
 }
+
 
 @end

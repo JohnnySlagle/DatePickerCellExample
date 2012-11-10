@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B2321AFF164C46F500AE5A71 /* JSDateTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2321AFE164C46F500AE5A71 /* JSDateTableViewController.m */; };
 		B2321B12164C506700AE5A71 /* JSDatePickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2321B11164C506700AE5A71 /* JSDatePickerCell.m */; };
+		B2953FE6164DD0310079BF84 /* CodecheckerRules.plist in Resources */ = {isa = PBXBuildFile; fileRef = B2953FE5164DD0310079BF84 /* CodecheckerRules.plist */; };
 		B2E3974D164C403C00594871 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2E3974C164C403C00594871 /* UIKit.framework */; };
 		B2E3974F164C403C00594871 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2E3974E164C403C00594871 /* Foundation.framework */; };
 		B2E39751164C403C00594871 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2E39750164C403C00594871 /* CoreGraphics.framework */; };
@@ -25,6 +26,7 @@
 		B2321AFE164C46F500AE5A71 /* JSDateTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSDateTableViewController.m; sourceTree = "<group>"; };
 		B2321B10164C506700AE5A71 /* JSDatePickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSDatePickerCell.h; sourceTree = "<group>"; };
 		B2321B11164C506700AE5A71 /* JSDatePickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSDatePickerCell.m; sourceTree = "<group>"; };
+		B2953FE5164DD0310079BF84 /* CodecheckerRules.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CodecheckerRules.plist; sourceTree = "<group>"; };
 		B2E39748164C403C00594871 /* DatePickerCellExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DatePickerCellExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2E3974C164C403C00594871 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B2E3974E164C403C00594871 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -98,6 +100,7 @@
 		B2E39753164C403C00594871 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B2953FE5164DD0310079BF84 /* CodecheckerRules.plist */,
 				B2E39754164C403C00594871 /* DatePickerCellExample-Info.plist */,
 				B2E39755164C403C00594871 /* InfoPlist.strings */,
 				B2E39758164C403C00594871 /* main.m */,
@@ -116,6 +119,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B2E39766164C403C00594871 /* Build configuration list for PBXNativeTarget "DatePickerCellExample" */;
 			buildPhases = (
+				B2953FE3164DCFDB0079BF84 /* ShellScript */,
 				B2E39744164C403C00594871 /* Sources */,
 				B2E39745164C403C00594871 /* Frameworks */,
 				B2E39746164C403C00594871 /* Resources */,
@@ -165,10 +169,27 @@
 				B2E3975F164C403C00594871 /* Default.png in Resources */,
 				B2E39761164C403C00594871 /* Default@2x.png in Resources */,
 				B2E39763164C403C00594871 /* Default-568h@2x.png in Resources */,
+				B2953FE6164DD0310079BF84 /* CodecheckerRules.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B2953FE3164DCFDB0079BF84 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${SRCROOT}\" && ./codechecker \"DatePickerCellExample\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B2E39744164C403C00594871 /* Sources */ = {

@@ -8,17 +8,17 @@
 
 #import "JSDatePickerCell.h"
 
+
 #pragma mark - Defines
 
 #pragma mark - Class Extension
 @interface JSDatePickerCell ()
 
 @property (nonatomic, strong) NSDate *dateValue;
-@property (nonatomic, strong) UIDatePicker *datePicker;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
+@property (nonatomic, strong) UIDatePicker *datePicker;
 @property (nonatomic, strong) UIToolbar *inputAccessoryToolbar;
-
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureDismiss;
 
 @end
@@ -30,12 +30,12 @@ static NSString *kDatePickerFormat = @"MMMM dd, yyyy";
 @implementation JSDatePickerCell
 
 //FIXME: For some reason all other properties were getting their automatic ivar except this one.
+
 @synthesize dateValue = _dateValue;
 
 #pragma mark - Init Methods
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+- (id)initWithStyle:(UITableViewCellStyle)iStyle reuseIdentifier:(NSString *)iReuseIdentifier {
+    self = [super initWithStyle:iStyle reuseIdentifier:iReuseIdentifier];
     if (self) {
         // Setup Defaults
         self.detailTextLabel.text = [self formattedDate];
@@ -62,33 +62,34 @@ static NSString *kDatePickerFormat = @"MMMM dd, yyyy";
                                                         object:self];
 }
 
+
 #pragma mark - UITableViewCell Overrides
 - (UIView *)inputView {
     return self.datePicker;
 }
 
--(UIView *)inputAccessoryView {
+
+- (UIView *)inputAccessoryView {
     return self.inputAccessoryToolbar;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
+
+- (void)setSelected:(BOOL)iSelected animated:(BOOL)iAnimated {
+    [super setSelected:iSelected animated:iAnimated];
     
-	if (selected) {
+	if (iSelected) {
 		[self becomeFirstResponder];
 
         if(self.tapGestureDismissEnabled) {
             // Setup Tap Gesture
             UITableView *tableView = (UITableView *)self.superview;
-            self.tapGestureDismiss = [[UITapGestureRecognizer alloc]
-                                 initWithTarget:self
-                                 action:@selector(dismissInputView)];
+            self.tapGestureDismiss = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissInputView)];
             
             [tableView addGestureRecognizer:self.tapGestureDismiss];
         }
 	}
 }
+
 
 #pragma mark - Lazy Instantiation Getters
 - (NSDate *)dateValue {
@@ -97,6 +98,7 @@ static NSString *kDatePickerFormat = @"MMMM dd, yyyy";
     }
     return _dateValue;
 }
+
 
 - (UIDatePicker *)datePicker {
     if (_datePicker == nil) {
@@ -112,6 +114,7 @@ static NSString *kDatePickerFormat = @"MMMM dd, yyyy";
     return _datePicker;
 }
 
+
 - (NSDateFormatter *)dateFormatter {
     if(_dateFormatter == nil) {
         _dateFormatter = [[NSDateFormatter alloc] init];
@@ -119,6 +122,7 @@ static NSString *kDatePickerFormat = @"MMMM dd, yyyy";
     }
     return _dateFormatter;
 }
+
 
 - (UIToolbar *)inputAccessoryToolbar {
     if(_inputAccessoryToolbar == nil) {
@@ -141,9 +145,10 @@ static NSString *kDatePickerFormat = @"MMMM dd, yyyy";
     return _inputAccessoryToolbar;
 }
 
+
 #pragma mark - Custom Setters
-- (void)setDateValue:(NSDate *)dateValue {
-    _dateValue = dateValue;
+- (void)setDateValue:(NSDate *)iDateValue {
+    _dateValue = iDateValue;
     self.detailTextLabel.text = [self formattedDate];
 }
 
@@ -152,6 +157,7 @@ static NSString *kDatePickerFormat = @"MMMM dd, yyyy";
 - (NSString *) formattedDate {
     return [self.dateFormatter stringFromDate:self.dateValue];
 }
+
 
 - (void)doneTapped {
 	[self resignFirstResponder];
@@ -171,14 +177,18 @@ static NSString *kDatePickerFormat = @"MMMM dd, yyyy";
 	return YES;
 }
 
+
 - (BOOL)becomeFirstResponder {
     self.datePicker.date = self.dateValue;
     return [super becomeFirstResponder];
 }
+
 
 - (BOOL)resignFirstResponder {
 	UITableView *tableView = (UITableView *)self.superview;
 	[tableView deselectRowAtIndexPath:[tableView indexPathForCell:self] animated:YES];
 	return [super resignFirstResponder];
 }
+
+
 @end
