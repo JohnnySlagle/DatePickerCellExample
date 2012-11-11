@@ -153,6 +153,11 @@ static NSString *kDatePickerFormat = @"MMMM dd, yyyy";
 }
 
 
+- (void)setDatePickerMode:(UIDatePickerMode)iMode {
+    _datePicker.datePickerMode = iMode;
+}
+
+
 #pragma mark - Selectors & Misc Methods
 - (NSString *) formattedDate {
     return [self.dateFormatter stringFromDate:self.dateValue];

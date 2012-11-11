@@ -38,4 +38,8 @@ static NSString *JSDATEPICKERCELL_DID_END_EDITING_NOTIFICATION = @"JSDATEPICKERC
 
 @property (nonatomic, assign, getter = isTapGestureDismissEnabled) BOOL tapGestureDismissEnabled;
 
+#pragma mark - Custom Setters
+- (void)setDatePickerMode:(UIDatePickerMode)iMode;
+
+
 @end
